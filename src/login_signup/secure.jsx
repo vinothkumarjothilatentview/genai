@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, microsoft_provider } from "./firebase";
 import * as RB from "react-bootstrap";
 import * as MB from "@mui/material";
+import { TfiMicrosoftAlt } from "react-icons/tfi";
+
 import { useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  OAuthProvider,
+} from "firebase/auth";
+// import { getAuth, signInWithPopup, OAuthProvider } from "firebase/auth";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Diversity1OutlinedIcon from "@mui/icons-material/Diversity1Outlined";
@@ -12,6 +20,7 @@ import "./style.css";
 
 const Secure = () => {
   const navigate = useNavigate();
+  const [d_text, set_d_text] = useState("Welcome To GenAI");
   const [d_mode, set_d_mode] = useState("sign_in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,20 +41,31 @@ const Secure = () => {
   };
 
   const microsoft_login = (e) => {
-    // signInWithPopup(auth, provider)
-    //   .then((result) => {
-    //     // User is signed in.
-    //     // IdP data available in result.additionalUserInfo.profile.
-
-    //     // Get the OAuth access token and ID Token
-    //     const credential = OAuthProvider.credentialFromResult(result);
-    //     const accessToken = credential.accessToken;
-    //     const idToken = credential.idToken;
-    //   })
-    //   .catch((error) => {
-    //     // Handle error.
-    //   });
     console.log("MICROSOFT LOGIN BTN CLICKED");
+
+    signInWithPopup(auth, microsoft_provider)
+      .then((result) => {
+        console.log("RESULT", result);
+        const credential = OAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+        const idToken = credential.idToken;
+        const user_obj = { name: "", email: "", token: "" };
+        user_obj["name"] = result["user"]["displayName"];
+        user_obj["email"] = result["user"]["email"];
+        user_obj["token"] = accessToken;
+        localStorage.setItem("user_obj", JSON.stringify(user_obj));
+        console.log("user_obj", user_obj);
+        console.log("credential", credential);
+        console.log("accessToken", accessToken);
+        console.log("idToken", idToken);
+        localStorage.setItem("auth_token", accessToken);
+        localStorage.setItem("cred", credential);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("LOGIN ERROR", error);
+        // Handle error.
+      });
   };
 
   const btn_submit = (e) => {
@@ -99,11 +119,11 @@ const Secure = () => {
         <RB.Col></RB.Col>
         <RB.Col>
           <RB.Row>
-            <RB.Col xs={3}></RB.Col>
-            <RB.Col xs={7}>
-              <h2 className="animate-charcter">Hello Again!</h2>
+            <RB.Col xs={1}></RB.Col>
+            <RB.Col xs={10}>
+              <h2 className="animate-charcter">{d_text}</h2>
             </RB.Col>
-            <RB.Col xs={2}></RB.Col>
+            <RB.Col xs={1}></RB.Col>
           </RB.Row>
         </RB.Col>
         <RB.Col></RB.Col>
@@ -164,12 +184,14 @@ const Secure = () => {
           <RB.Row>
             <MB.Stack>
               <MB.Button variant="contained" onClick={microsoft_login}>
-                Microsoft Login
+                <span>
+                  <TfiMicrosoftAlt /> {"    Login With Microsoft Account"}
+                </span>
               </MB.Button>
             </MB.Stack>
           </RB.Row>
           <RB.Row>&nbsp;</RB.Row>
-          <RB.Row>
+          {/* <RB.Row>
             <RB.Col>
               <MB.Link variant="body2" onClick={switch_signin_signup}>
                 {d_mode === "sign_in"
@@ -177,7 +199,7 @@ const Secure = () => {
                   : "have an account? Sign In"}
               </MB.Link>
             </RB.Col>
-          </RB.Row>
+          </RB.Row> */}
         </RB.Col>
         <RB.Col></RB.Col>
       </RB.Row>
