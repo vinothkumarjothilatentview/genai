@@ -1,13 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import Secure from "./login_signup/secure";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import Landing from "./landing";
+import AuthValidator from "./login_signup/auth_validator";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <div>
+        <section>
+          <Routes>
+            <Route path="/secure" element={<Secure />} />
+            <Route
+              path="/"
+              element={
+                <AuthValidator>
+                  <Landing />
+                </AuthValidator>
+              }
+            />
+          </Routes>
+        </section>
+      </div>
+    </Router>
   </React.StrictMode>
 );
 
