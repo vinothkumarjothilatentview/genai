@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const Auth_Validator = ({ children }) => {
   const navigate = useNavigate();
-  let auth_token = localStorage.getItem("auth_token");
+  let auth_token = localStorage.getItem("auth_token_v2");
 
   let check_auth = () => {
     if (auth_token === "" || auth_token === null) {

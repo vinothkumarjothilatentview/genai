@@ -2,7 +2,7 @@
 const POWERBI = (props) => {
   const demos = {
     soundcloud:
-      '<iframe width="100%" height="'+props.height+'" scrolling="no" frameborder="no" allow="autoplay" src="'+props.URL+'"></iframe>',
+      '<iframe width="100%" height="'+props.height+'" scrolling="no" frameborder="no" allow="autoplay" src="'+props.URL+'" allowfullscreen></iframe>',
   };
 
   function Iframe(props) {

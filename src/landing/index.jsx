@@ -14,16 +14,20 @@ const Landing = () => {
     "https://genai-website.azurewebsites.net/lv_chatbot4/"
   );
 
+  // var url = data.url + "&output=embed";
+  // window.location.replace(url);
+
   let user_logout = () => {
     localStorage.removeItem("user_obj");
-    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_token_v2");
     navigate("/secure");
   };
 
   useEffect(() => {
     let u_data = JSON.parse(localStorage.getItem("user_obj"));
-    set_user_name(u_data["name"] || "");
-    console.log("u_data", u_data);
+    if (u_data !== null) {
+      set_user_name(u_data["name"] || "");
+    }
   }, []);
   return (
     <RB.Row className="no_p_m">

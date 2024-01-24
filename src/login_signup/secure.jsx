@@ -58,9 +58,13 @@ const Secure = () => {
         console.log("credential", credential);
         console.log("accessToken", accessToken);
         console.log("idToken", idToken);
-        localStorage.setItem("auth_token", accessToken);
+        localStorage.setItem("auth_token_v2", accessToken);
         localStorage.setItem("cred", credential);
         navigate("/");
+        // window.open("https://genai-website.azurewebsites.net/lv_chatbot4/", '_blank');
+        // window.location.replace(
+        //   "https://genai-website.azurewebsites.net/lv_chatbot4/"
+        // );
       })
       .catch((error) => {
         console.log("LOGIN ERROR", error);
@@ -81,7 +85,7 @@ const Secure = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        localStorage.setItem("auth_token", user["accessToken"]);
+        localStorage.setItem("auth_token_v2", user["accessToken"]);
         navigate("/");
       })
       .catch((error) => {
